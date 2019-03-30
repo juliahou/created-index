@@ -49,7 +49,7 @@ var negativeX = 1;
 var positiveZ = 2;
 var positiveX = 3;
 
-var cameraDistance = 200;
+var cameraDistance = 250;
 var cameraDir = 0;
 var cameraYRotation = 0;
 var cameraPosition = new THREE.Vector3(0, 0, cameraDistance);
@@ -92,7 +92,8 @@ fontLoader.load("fonts/lmmrfont.typeface.json", function(response) {
 	makeTextGeometries(font);
 	init(font);
 
-	for (var iter = 0; iter < 7; iter++) {
+	// this stuff is for the giant floating letters, not necessary
+	/*for (var iter = 0; iter < 7; iter++) {
 		var alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		var char = alphabets[Math.floor(Math.random() * 52)];
 		var giantAlphabetGeometry = new THREE.TextGeometry(char, {
@@ -100,7 +101,8 @@ fontLoader.load("fonts/lmmrfont.typeface.json", function(response) {
 			size: 100 + Math.random() * 10,
 			height: 15 + Math.random() * 1.5
 		});
-		var giantAlphabetMaterial = new THREE.MeshBasicMaterial({color: 0x222222});
+		//var giantAlphabetMaterial = new THREE.MeshBasicMaterial({color: 0x222222});
+		var giantAlphabetMaterial = new THREE.MeshBasicMaterial({color: 0xFF0000});
 		var giantAlphabetMesh = new THREE.Mesh(giantAlphabetGeometry, giantAlphabetMaterial);
 		giantAlphabetMesh.position.set(Math.random() * 1600, -100, Math.random() * 1600 - 800);
 		giantAlphabetMesh.rotation.x = Math.random() * Math.PI * 2;
@@ -108,7 +110,7 @@ fontLoader.load("fonts/lmmrfont.typeface.json", function(response) {
 		giantAlphabetMesh.rotation.z = Math.random() * Math.PI * 2;
 		scene.add(giantAlphabetMesh);
 		arrayOfAlphabets.push(giantAlphabetMesh);
-	}
+	}*/
 });
 
 var smallTextGeometries = [];
@@ -373,7 +375,7 @@ var thing = function(type, position) {
 		case tree_type:
 			this.numLettersRequired = 70;
 
-			var height = 50 + Math.random() * 100;
+			var height = 20 + Math.random() * 100;
 			for (var y = 0; y < 70; y++) {
 				this.positions.push(new THREE.Vector3(
 					this.position.x + Math.random() * 4 - 2,
@@ -564,7 +566,7 @@ function makeThing(type, position) {
 }
 
 makeThing(player_type, new THREE.Vector3(0, -100, 0));
-makeThing(word_type, new THREE.Vector3(0, 0, 0));
+makeThing(word_type, new THREE.Vector3(0, -200, 0));
 
 
 /*
@@ -831,8 +833,9 @@ var consoleLetters = [];
 var sceneString = "";
 var consoleString = "";
 
+// julia for some reason height of original text??
 var reserveX = 200;
-var reserveY = 100;
+var reserveY = 200;
 var currentReserveX = reserveX;
 var currentReserveY = reserveY;
 var reserveWidth = 150;
@@ -991,8 +994,11 @@ function render() {
 	camera.position.y += (cameraPosition.y - camera.position.y) / 50;
 	camera.position.z += (cameraPosition.z - camera.position.z) / 50;
 
-	camera.rotation.x += (rotationX - camera.rotation.x) / 20;
-	camera.rotation.y += ((cameraYRotation + rotationY) - camera.rotation.y) / 20;
+	//camera.rotation.x += (rotationX - camera.rotation.x) / 20;
+	//camera.rotation.y += ((cameraYRotation + rotationY) - camera.rotation.y) / 20;
+	// julia changed how quickly camera rotated
+	camera.rotation.x += (rotationX - camera.rotation.x)/10;
+	camera.rotation.y += ((cameraYRotation + rotationY) - camera.rotation.y)/10;
 
 	for (var iter = 0; iter < 1; iter++) {
 		var flake = new letter(console_type, "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)], font);
@@ -1186,10 +1192,10 @@ var zoomed = true;
 
 $("body").on("click", function(event) {
 	if (zoomed) {
-		cameraDistance = 300;
+		cameraDistance = 350;
 		zoomed = false;
 	} else {
-		cameraDistance = 200;
+		cameraDistance = 250;
 		zoomed = true;
 	}
 	cameraPosition.z = cameraDistance;

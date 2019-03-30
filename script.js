@@ -18,7 +18,7 @@ platform_mesh = new THREE.Mesh(platform_geo, platform_material);
 platform_mesh.position.set(1600, -150, 0);
 
 var camera = new THREE.PerspectiveCamera(
-	55,
+	75,
 	window.innerWidth / window.innerHeight,
 	0.1,
 	500);
@@ -49,7 +49,7 @@ var negativeX = 1;
 var positiveZ = 2;
 var positiveX = 3;
 
-var cameraDistance = 350;
+var cameraDistance = 250;
 var cameraDir = 0;
 var cameraYRotation = 0;
 var cameraPosition = new THREE.Vector3(0, 0, cameraDistance);
@@ -878,7 +878,7 @@ function checkDisplayAndStuff() {
 	for (var i = 0; i < consoleLetters.length; i++) {
 		consoleLetters[i].free();
 	}
-	var player = things[1];
+	var player = things[0];
 	for (var i = 0; i < things.length; i++) {
 		var t = things[i];
 		var dist = t.position.distanceToSquared(player.position);
@@ -1192,10 +1192,10 @@ var zoomed = true;
 
 $("body").on("click", function(event) {
 	if (zoomed) {
-		cameraDistance = 450;
+		cameraDistance = 350;
 		zoomed = false;
 	} else {
-		cameraDistance = 350;
+		cameraDistance = 250;
 		zoomed = true;
 	}
 	cameraPosition.z = cameraDistance;

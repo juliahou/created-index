@@ -1,3 +1,8 @@
+// search julia for helpful comments
+// console = words denoting game control and player movement
+// words = words that make up poem? 
+// checkDisplay run every time player moves
+
 var scene = new THREE.Scene();
 var consoleScene = new THREE.Scene();
 
@@ -13,7 +18,7 @@ platform_mesh = new THREE.Mesh(platform_geo, platform_material);
 platform_mesh.position.set(1600, -150, 0);
 
 var camera = new THREE.PerspectiveCamera(
-	75,
+	55,
 	window.innerWidth / window.innerHeight,
 	0.1,
 	500);
@@ -44,7 +49,7 @@ var negativeX = 1;
 var positiveZ = 2;
 var positiveX = 3;
 
-var cameraDistance = 300;
+var cameraDistance = 200;
 var cameraDir = 0;
 var cameraYRotation = 0;
 var cameraPosition = new THREE.Vector3(0, 0, cameraDistance);
@@ -159,9 +164,10 @@ var path_type = 1;
 var horizontal_path_type = 1.5;
 var tree_type = 2;
 var alphabet_type = 3;
+var word_type = 4;
 
 function getIntroString(type) {
-	switch (type) {
+	/*switch (type) {
 		case player_type:
 			return "He is there the whole time. ";
 			break;
@@ -180,7 +186,11 @@ function getIntroString(type) {
 		case alphabet_type:
 			return "He perceives that this space is filled with alphabets. ";
 			break;
-	}
+		case word_type:
+			return "idk fam. "
+			break;
+	}*/
+	return ""
 }
 
 function getFormerString(type) {
@@ -189,20 +199,24 @@ function getFormerString(type) {
 			return "**************************** ";
 			break;
 		case line_type:
-			return "The line is straight and finite. ";
+			return "Two roads diverged in a yellow wood, ";
 			break;
 		case path_type:
-			return "A segment of a path is inseparable from the path. "
-			break;
+			return "meowmeowmeow meow meow meow"
 		case tree_type:
-			return "Lining along the paths, the trees appear brittle under the covering snow. ";
+			return "And be one traveler, long I stood ";
 			break;
 		case horizontal_path_type:
-			return "A segment of a path is inseparable from THE path... "
+			return "And looked down one as far as I could "
 			break;
 		case alphabet_type:
-			return "A giant alphabet floats. "
+			return "To where it bent in the undergrowth; "
 			break;
+		case word_type:
+			return "Two roads diverged in a yellow wood \n And sorry I could not travel both \n And be one traveler, long I stood \n And looked down one as far as I could \n To where it bent in the undergrowth "
+			break;
+		case word_type1:
+			return ""
 	}
 }
 
@@ -397,6 +411,36 @@ var thing = function(type, position) {
 				this.numLettersRequired += numNodesOnBranch;
 			}
 			break;
+		case word_type:
+			this.numLettersRequired = 100;
+
+			var bottomLeftFront = new THREE.Vector3(this.position.x - 30, this.position.y - 5, this.position.z + 50);
+			var topRightBack = new THREE.Vector3(this.position.x + 30, this.position.y + 5, this.position.z - 50);
+
+			for (var x = bottomLeftFront.x; x <= topRightBack.x; x += 10) {
+				for (var z = bottomLeftFront.z; z >= topRightBack.z; z -= 10) {
+					this.positions.push(new THREE.Vector3(
+						x + Math.random() * 20 - 10,
+						this.position.y - Math.random() * 10,
+						z + Math.random() * 20 - 10
+						));
+					var r = Math.floor(Math.random() * 3);
+					switch (r) {
+						case 0:
+							this.colors.push(0x333333);
+							break;
+
+						case 1:
+							this.colors.push(0x666666);
+							break;
+
+						case 2:
+							this.colors.push(0x000000);
+							break;
+					}
+				}
+			}
+			break;
 	}
 }
 
@@ -520,6 +564,9 @@ function makeThing(type, position) {
 }
 
 makeThing(player_type, new THREE.Vector3(0, -100, 0));
+makeThing(word_type, new THREE.Vector3(0, 0, 0));
+
+
 /*
 for (var iter = 0; iter < 40; iter++) {
 	makeThing(line_type, new THREE.Vector3(Math.random() * 1600, -100, Math.random() * 1600 - 800));
@@ -529,6 +576,10 @@ for (var iter = 0; iter < 10; iter++) {
 	makeThing(tree_type, new THREE.Vector3(Math.random() * 1600, -100, Math.random() * 1600 - 800));
 }
 */
+
+//makeThing(word_type, new THREE.Vector3(300, 200, 100));
+//makeThing(word_type, new THREE.Vector3(500, -100, -400));
+//makeThing(word_type, new THREE.Vector3(900, -100, -400));
 
 makeThing(path_type, new THREE.Vector3(0, -100, 0));
 
@@ -759,7 +810,8 @@ letter.prototype.update = function() {
 			this.sceneTick++;
 
 			if (this.sceneTickToForm <= 0) {
-				this.mesh.rotation.y = this.sceneTick * this.randomFactor * 0.01;
+				// stopped rotating letters (julia)
+				//this.mesh.rotation.y = this.sceneTick * this.randomFactor * 0.01;
 
 				if (this.mesh.position.distanceTo(this.destination) < 2) {
 					this.sceneArrived = true;
@@ -805,13 +857,13 @@ function addReserveString(s, id) {
 	}
 }
 
-var consoleX = 100;
-var consoleY = -100;
+var consoleX = -300;
+var consoleY = 200;
 var currentConsoleX = consoleX;
 var currentConsoleY = consoleY;
 var currentLineIndex = 0;
 var consoleWidth = 250;
-var consoleHeight = -200;
+var consoleHeight = -100;
 var letterSpacing = 0.275;
 var letterWidth = 0;
 
@@ -821,7 +873,10 @@ var playerMakingMove = false;
 var playerMadeMove = false;
 
 function checkDisplayAndStuff() {
-	var player = things[0];
+	for (var i = 0; i < consoleLetters.length; i++) {
+		consoleLetters[i].free();
+	}
+	var player = things[1];
 	for (var i = 0; i < things.length; i++) {
 		var t = things[i];
 		var dist = t.position.distanceToSquared(player.position);
@@ -848,7 +903,7 @@ function checkDisplayAndStuff() {
 				t.isFormed = false;
 				for (var j = 0; j < sceneLetters.length; j++) {
 					var nl = sceneLetters[j];
-					if (nl.thingID == t.ID) {
+					if (nl.thingID == t.ID && t.type != word_type) {
 						nl.free();
 					}
 				}
@@ -879,13 +934,15 @@ function addConsoleString(s) {
 	for (var i = 0; i < s.length; i++) {
 		if (s[i] != "\n") {
 			var l = new letter(console_type, s[i], font);
-			l.setDestination(currentConsoleX, currentConsoleY, 0);
-			l.setPosition(currentConsoleX, currentConsoleY + Math.random() - 0.5, 0);
+			// Change console text position (julia)
+			l.setDestination(currentConsoleX, currentConsoleY, -100);
+			l.setPosition(currentConsoleX, currentConsoleY + Math.random() - 0.5, -100);
 			l.consoleLineIndex = currentLineIndex;
 
 			consoleScene.add(l.mesh);
 			consoleLetters.push(l);
 
+			// keep console from continually shifting (julia)
 			currentConsoleX += letterWidth;
 			if (currentConsoleX >= consoleX + consoleWidth - 5 && s[i] == " ") {
 				currentConsoleX = consoleX;
@@ -898,8 +955,9 @@ function addConsoleString(s) {
 			currentLineIndex++;
 		}
 
-		if (currentConsoleY < consoleHeight) {
-			currentConsoleY += letterHeight * 1.3;
+		if (currentConsoleY < consoleY + consoleHeight) {
+			//currentConsoleY -= letterHeight * 1.3;
+			currentConsoleY = consoleY;
 			currentLineIndex--;
 
 			for (var j = 0; j < consoleLetters.length; j++) {
@@ -990,7 +1048,11 @@ function render() {
 					Math.random() * 4 - 2
 					));
 				l.mesh.material.color.setHex(t.colors[t.numLettersFormed]);
-				l.setDestination(newDest.x, newDest.y, newDest.z);
+				// below commented out in order to keep letters from moving (julia)
+				//l.setDestination(newDest.x, newDest.y, newDest.z);
+				if (t.type != word_type) {
+					l.setDestination(newDest.x, newDest.y, newDest.z);
+				}
 
 				t.numLettersFormed++;
 			}
@@ -1119,6 +1181,20 @@ $("body").on("mousemove", function(event) {
 	rotationY = -(event.pageX - window.innerWidth / 2) * 0.001;
 	rotationX = -(event.pageY - window.innerHeight / 2) * 0.001;
 });
+
+var zoomed = true;
+
+$("body").on("click", function(event) {
+	if (zoomed) {
+		cameraDistance = 300;
+		zoomed = false;
+	} else {
+		cameraDistance = 200;
+		zoomed = true;
+	}
+	cameraPosition.z = cameraDistance;
+	camera.position.z = cameraDistance;
+})
 
 $("body").bind("keypress", function(event) {
 	if (event.which >= 97 && event.which <= 122) {

@@ -49,7 +49,7 @@ var negativeX = 1;
 var positiveZ = 2;
 var positiveX = 3;
 
-var cameraDistance = 250;
+var cameraDistance = 350;
 var cameraDir = 0;
 var cameraYRotation = 0;
 var cameraPosition = new THREE.Vector3(0, 0, cameraDistance);
@@ -215,7 +215,7 @@ function getFormerString(type) {
 			return "To where it bent in the undergrowth; "
 			break;
 		case word_type:
-			return "Two roads diverged in a yellow wood \n And sorry I could not travel both \n And be one traveler, long I stood \n And looked down one as far as I could \n To where it bent in the undergrowth "
+			return "Two roads diverged in a yellow wood                    And sorry I could not travel both"
 			break;
 		case word_type1:
 			return ""
@@ -373,9 +373,8 @@ var thing = function(type, position) {
 			break;
 
 		case tree_type:
+			var height = 40 + Math.random() * 100;
 			this.numLettersRequired = 70;
-
-			var height = 20 + Math.random() * 100;
 			for (var y = 0; y < 70; y++) {
 				this.positions.push(new THREE.Vector3(
 					this.position.x + Math.random() * 4 - 2,
@@ -414,7 +413,7 @@ var thing = function(type, position) {
 			}
 			break;
 		case word_type:
-			this.numLettersRequired = 100;
+			this.numLettersRequired = 60;
 
 			var bottomLeftFront = new THREE.Vector3(this.position.x - 30, this.position.y - 5, this.position.z + 50);
 			var topRightBack = new THREE.Vector3(this.position.x + 30, this.position.y + 5, this.position.z - 50);
@@ -429,15 +428,15 @@ var thing = function(type, position) {
 					var r = Math.floor(Math.random() * 3);
 					switch (r) {
 						case 0:
-							this.colors.push(0x333333);
+							this.colors.push(0xFF0000);
 							break;
 
 						case 1:
-							this.colors.push(0x666666);
+							this.colors.push(0xFF0000);
 							break;
 
 						case 2:
-							this.colors.push(0x000000);
+							this.colors.push(0xFF0000);
 							break;
 					}
 				}
@@ -1143,6 +1142,7 @@ function render() {
 		playerMakingMove = false;
 		playerMadeMove = false;
 
+		// julia check this out for new text?
 		// senpai will reset you
 		currentReserveX = map[playerPosition].x + reserveX;
 		currentReserveY = map[playerPosition].y + reserveY;
@@ -1192,10 +1192,10 @@ var zoomed = true;
 
 $("body").on("click", function(event) {
 	if (zoomed) {
-		cameraDistance = 350;
+		cameraDistance = 450;
 		zoomed = false;
 	} else {
-		cameraDistance = 250;
+		cameraDistance = 350;
 		zoomed = true;
 	}
 	cameraPosition.z = cameraDistance;

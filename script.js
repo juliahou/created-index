@@ -195,6 +195,8 @@ function getIntroString(type) {
 	return ""
 }
 
+var phrases = ["ayyyy lmao", "Two roads diverged in a yellow wood                    And sorry I could not travel both"];
+
 function getFormerString(type) {
 	switch (type) {
 		case player_type:
@@ -215,10 +217,8 @@ function getFormerString(type) {
 			return "To where it bent in the undergrowth; "
 			break;
 		case word_type:
-			return "Two roads diverged in a yellow wood                    And sorry I could not travel both"
+			return phrases.pop();
 			break;
-		case word_type1:
-			return ""
 	}
 }
 
@@ -578,7 +578,7 @@ for (var iter = 0; iter < 10; iter++) {
 }
 */
 
-//makeThing(word_type, new THREE.Vector3(300, 200, 100));
+makeThing(word_type, new THREE.Vector3(300, 200, 100));
 //makeThing(word_type, new THREE.Vector3(500, -100, -400));
 //makeThing(word_type, new THREE.Vector3(900, -100, -400));
 
@@ -838,6 +838,7 @@ var reserveY = 200;
 var currentReserveX = reserveX;
 var currentReserveY = reserveY;
 var reserveWidth = 150;
+var reserveShift = 200;
 
 function addReserveString(s, id) {
 	for (var i = 0; i < s.length; i++) {
@@ -893,10 +894,11 @@ function checkDisplayAndStuff() {
 			if (!t.isFormed) {
 				t.isFormed = true;
 				var numLetters = t.numLettersRequired;
-				var numLettersPerString = getFormerString(t.type).length;
+				formerString = getFormerString(t.type);
+				var numLettersPerString = formerString.length;
 				var numStrings = Math.ceil(numLetters / numLettersPerString);
 				for (var x = 0; x < numStrings; x++) {
-					addReserveString(getFormerString(t.type), t.ID);
+					addReserveString(formerString, t.ID);
 				}
 			}
 		} else {
@@ -1144,8 +1146,10 @@ function render() {
 
 		// julia check this out for new text?
 		// senpai will reset you
-		currentReserveX = map[playerPosition].x + reserveX;
-		currentReserveY = map[playerPosition].y + reserveY;
+		currentReserveX = map[playerPosition].x + reserveShift;
+		currentReserveY = map[playerPosition].y + reserveShift;
+		reserveX = currentReserveX;
+		reserveY = currentReserveY;
 
 		checkDisplayAndStuff();
 	}

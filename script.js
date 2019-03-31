@@ -195,12 +195,12 @@ function getIntroString(type) {
 	return ""
 }
 
-var phrases = ["ayyyy lmao", "Two roads diverged in a yellow wood                    And sorry I could not travel both"];
+var phrases = ["and rewrite you                                       ", "like God Himself had decided to delete                ", "but it all seemed to fade into whitespace             ", "spoke with confidence, loud and red                   ", "and you tried. you raised your voice                  ", "to see the forest for the trees                       ", "she told you to let in the light                      ", "too linear                                            ", "and told you it was too sad                           ", "it was the night your mother read your first story    ", "written into footnotes                                ", "before you were punctured by asterisks                ", "the last time you were here was years ago             "];
 
 function getFormerString(type) {
 	switch (type) {
 		case player_type:
-			return "**************************** ";
+			return "************************** ";
 			break;
 		case line_type:
 			return "Two roads diverged in a yellow wood, ";
@@ -250,7 +250,7 @@ var thing = function(type, position) {
 
 	switch (this.type) {
 		case player_type:
-			this.numLettersRequired = 300;
+			this.numLettersRequired = 295;
 			this.isBlob = true;
 
 			for (var x = 0; x < 100; x++) {
@@ -333,7 +333,7 @@ var thing = function(type, position) {
 			}
 			break;
 		case horizontal_path_type:
-			this.numLettersRequired = 77;
+			this.numLettersRequired = 60;
 
 			var bottomLeftFront = new THREE.Vector3(this.position.x - 50, this.position.y - 5, this.position.z + 30);
 			var topRightBack = new THREE.Vector3(this.position.x + 50, this.position.y + 5, this.position.z - 30);
@@ -413,7 +413,7 @@ var thing = function(type, position) {
 			}
 			break;
 		case word_type:
-			this.numLettersRequired = 60;
+			this.numLettersRequired = 54;
 
 			var bottomLeftFront = new THREE.Vector3(this.position.x - 30, this.position.y - 5, this.position.z + 50);
 			var topRightBack = new THREE.Vector3(this.position.x + 30, this.position.y + 5, this.position.z - 50);
@@ -494,33 +494,33 @@ var rightOkay = false;
 var map = [
 	new THREE.Vector3(0, -40, 0),
 	new THREE.Vector3(400, -40, 0),
-	new THREE.Vector3(400, -40, -400),
-	new THREE.Vector3(400, -40, 400),
-	new THREE.Vector3(800, -40, -400),
-	new THREE.Vector3(800, -40, -800),
+	//new THREE.Vector3(400, -40, -400),
+	//new THREE.Vector3(400, -40, 400),
+	//new THREE.Vector3(800, -40, -400),
+	//new THREE.Vector3(800, -40, -800),
 	new THREE.Vector3(800, -40, 0),
-	new THREE.Vector3(800, -40, 400),
-	new THREE.Vector3(800, -40, 800),
-	new THREE.Vector3(1200, -40, -400),
+	//new THREE.Vector3(800, -40, 400),
+	//new THREE.Vector3(800, -40, 800),
+	//new THREE.Vector3(1200, -40, -400),
 	new THREE.Vector3(1200, -40, 0),
-	new THREE.Vector3(1200, -40, 800),
-	new THREE.Vector3(1200, -40, 400),
+	//new THREE.Vector3(1200, -40, 800),
+	//new THREE.Vector3(1200, -40, 400),
 	new THREE.Vector3(1600, -40, 0)
 ];
 var coordsMap = [
 	[0, 0],
 	[1, 0],
-	[1, -1],
-	[1, 1],
-	[2, -1],
-	[2, -2],
+	//[1, -1],
+	//[1, 1],
+	//[2, -1],
+	//[2, -2],
 	[2, 0],
-	[2, 1],
-	[2, 2],
-	[3, -1],
+	//[2, 1],
+	//[2, 2],
+	//[3, -1],
 	[3, 0],
-	[3, 2],
-	[3, 1],
+	//[3, 2],
+	//[3, 1],
 	[4, 0]
 ];
 
@@ -837,7 +837,7 @@ var reserveX = 200;
 var reserveY = 200;
 var currentReserveX = reserveX;
 var currentReserveY = reserveY;
-var reserveWidth = 150;
+var reserveWidth = 200;
 var reserveShift = 200;
 
 function addReserveString(s, id) {
@@ -1092,7 +1092,7 @@ function render() {
 			backOkay = false;
 			rightOkay = false;
 
-			for (var m = 0; m < coordsMap.length; m++) {
+			/*for (var m = 0; m < coordsMap.length; m++) {
 				var x = coordsMap[m][0];
 				var z = coordsMap[m][1];
 
@@ -1133,7 +1133,9 @@ function render() {
 						addConsoleString("r: turns right.\n");
 					}
 				}
-			}
+			}*/
+			forwardOkay = true;
+			backOkay = true;
 
 			playerMakingMove = true;
 		}

@@ -196,7 +196,7 @@ function getIntroString(type) {
 	return ""
 }
 
-var phrases = ["and rewrite you                                       ", "like God Himself had decided to erase                 ", "but it all seemed to fade into whitespace             ", "spoke with confidence, loud and red                   ", "and you tried. you raised your voice                  ", "to see the forest for the trees                       ", "to rip away whatever fears you’d stapled to your chest", "she told you to let in the light                      ", "too linear                                            ", "and told you it was too sad                           ", "the night your mother read your first published story ", "written into footnotes                                ", "before you were punctured by asterisks                ", "the last time you were here was years ago             "];
+var phrases = ["and rewrite you                                       ", "as if God Himself had decided to erase                ", "but it all seemed to fade into whitespace             ", "spoke with confidence, loud and red                   ", "and you tried. you raised your voice                  ", "to see the forest for the trees                       ", "to rip away whatever fears you’d stapled to your chest", "she told you to let in the light                      ", "too linear.                                           ", "and told you it was too sad                           ", "the night your mother read your first published story ", "and written into footnotes.                           ", "before you were punctured by asterisks                ", "the last time you were here was years ago             "];
 
 function getFormerString(type) {
 	switch (type) {
@@ -204,18 +204,18 @@ function getFormerString(type) {
 			return "************************** ";
 			break;
 		case line_type:
-			return "Two roads diverged in a yellow wood, ";
+			return "look behind you ";
 			break;
 		case path_type:
-			return "meowmeowmeow meow meow meow"
+			return "what do you see? "
 		case tree_type:
-			return "And be one traveler, long I stood ";
+			return "only traveler and tree ";
 			break;
 		case horizontal_path_type:
-			return "And looked down one as far as I could "
+			return "an ink-speckled sky "
 			break;
 		case alphabet_type:
-			return "To where it bent in the undergrowth; "
+			return "a heartbeat "
 			break;
 		case word_type:
 			return phrases.pop();

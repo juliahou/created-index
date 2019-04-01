@@ -167,6 +167,7 @@ var horizontal_path_type = 1.5;
 var tree_type = 2;
 var alphabet_type = 3;
 var word_type = 4;
+var star_type = 5;
 
 function getIntroString(type) {
 	/*switch (type) {
@@ -195,7 +196,7 @@ function getIntroString(type) {
 	return ""
 }
 
-var phrases = ["and rewrite you                                       ", "like God Himself had decided to delete                ", "but it all seemed to fade into whitespace             ", "spoke with confidence, loud and red                   ", "and you tried. you raised your voice                  ", "to see the forest for the trees                       ", "to rip away whatever fears you’d stapled to your chest", "she told you to let in the light                      ", "too linear                                            ", "and told you it was too sad                           ", "it was the night your mother read your first story    ", "written into footnotes                                ", "before you were punctured by asterisks                ", "the last time you were here was years ago             "];
+var phrases = ["and rewrite you                                       ", "like God Himself had decided to erase                 ", "but it all seemed to fade into whitespace             ", "spoke with confidence, loud and red                   ", "and you tried. you raised your voice                  ", "to see the forest for the trees                       ", "to rip away whatever fears you’d stapled to your chest", "she told you to let in the light                      ", "too linear                                            ", "and told you it was too sad                           ", "the night your mother read your first published story ", "written into footnotes                                ", "before you were punctured by asterisks                ", "the last time you were here was years ago             "];
 
 function getFormerString(type) {
 	switch (type) {
@@ -218,6 +219,9 @@ function getFormerString(type) {
 			break;
 		case word_type:
 			return phrases.pop();
+			break;
+		case star_type:
+			return "*";
 			break;
 	}
 }
@@ -373,8 +377,8 @@ var thing = function(type, position) {
 			break;
 
 		case tree_type:
-			var height = 40 + Math.random() * 100;
-			this.numLettersRequired = 100;
+			var height = 50 + Math.random() * 100;
+			this.numLettersRequired = 70;
 			for (var y = 0; y < 70; y++) {
 				this.positions.push(new THREE.Vector3(
 					this.position.x + Math.random() * 4 - 2,
@@ -441,6 +445,14 @@ var thing = function(type, position) {
 					}
 				}
 			}
+			break;
+		case star_type:
+			this.numLettersRequired = 1;
+
+			this.positions.push(new THREE.Vector3(this.position.x, this.position.y, this.position.z));
+
+			this.colors.push(0x000000);
+
 			break;
 	}
 }
@@ -658,7 +670,8 @@ letter.prototype.setDestination = function(x, y, z) {
 }
 
 letter.prototype.update = function() {
-	if (this.isFree) {
+	// kept stars from moving off screen (julia)
+	if (this.isFree && this.type != star_type) {
 		this.material.opacity -= 0.01;
 		if (this.material.opacity < 0.05) {
 			this.isDead = true;
@@ -772,6 +785,7 @@ function checkDisplayAndStuff() {
 	for (var i = 0; i < consoleLetters.length; i++) {
 		consoleLetters[i].free();
 	}
+
 	var player = things[0];
 	for (var i = 0; i < things.length; i++) {
 		var t = things[i];
@@ -794,7 +808,7 @@ function checkDisplayAndStuff() {
 					addReserveString(formerString, t.ID);
 				}
 			}
-		} else {
+		} else if (t.type != star_type) {
 			t.isDisplayed = false;
 			if (t.isFormed) {
 				t.isFormed = false;
@@ -918,6 +932,20 @@ function render() {
 		consoleLetters.push(flake);
 	}
 
+	if (tick == 10) {
+		for (var iter = 0; iter < 2500; iter++) {
+			var l = new letter(star_type, "*", font);
+			var x = Math.random() * 10000 - 2000;
+			var y = 250;
+			var z = Math.random() * 2000 - 1000;
+			l.setDestination(x, y, z);
+			l.setPosition(x, y, z);
+			l.mesh.material.color.setHex(0x000000);
+			scene.add(l.mesh);
+			consoleLetters.push(l);
+		}
+	}
+
 	for (var i = 0; i < consoleLetters.length; i++) {
 		var l = consoleLetters[i];
 		if (l.isDead) {
@@ -973,7 +1001,7 @@ function render() {
 
 	if (playerReadyToMove) {
 		if (!playerMakingMove) {
-			addConsoleString("\nThe player...\n");
+			//addConsoleString("\nThe player...\n");
 
 			eastOkay = false;
 			northOkay = false;

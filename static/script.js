@@ -1,6 +1,6 @@
 // search julia for helpful comments
 // console = words denoting game control and player movement
-// words = words that make up poem? 
+// words = words that make up poem?
 // checkDisplay run every time player moves
 
 var scene = new THREE.Scene();

@@ -168,6 +168,7 @@ var tree_type = 2;
 var alphabet_type = 3;
 var word_type = 4;
 var star_type = 5;
+var help_type = 6;
 
 function getIntroString(type) {
 	/*switch (type) {
@@ -223,6 +224,8 @@ function getFormerString(type) {
 		case star_type:
 			return "*";
 			break;
+		case help_type:
+			return "Press 'f' to move forward. You cannot go back."
 	}
 }
 
@@ -446,6 +449,16 @@ var thing = function(type, position) {
 				}
 			}
 			break;
+		/*case help_type:
+			this.numLettersRequired = 46;
+
+			this.positions.push(new THREE.Vector3(
+				100,
+				100,
+				100
+				));
+			this.colors.push(0x000000);
+			break;*/
 		case star_type:
 			this.numLettersRequired = 1;
 
@@ -581,6 +594,8 @@ function makeThing(type, position) {
 makeThing(player_type, new THREE.Vector3(0, -100, 0));
 makeThing(word_type, new THREE.Vector3(0, 200, 100))
 makeThing(path_type, new THREE.Vector3(0, -100, 0));
+
+/*makeThing(help_type, new THREE.Vector3(0, 0, 0));*/
 
 var start_lol = 400;
 for (var i = 0; i < 20; i++) {
@@ -746,7 +761,16 @@ var currentReserveY = reserveY;
 var reserveWidth = 280;
 var reserveShift = 200;
 
-function addReserveString(s, id) {
+function addReserveString(s, id, type, position) {
+	/*if (type == help_type) {
+		console.log("help");
+		var l = new letter(scene_type, s[i], font);
+		l.thingID = id;
+		l.setPosition(0,0,0);
+
+		scene.add(l.mesh);
+		sceneLetters.push(l);
+	}*/
 	for (var i = 0; i < s.length; i++) {
 		var l = new letter(scene_type, s[i], font);
 		l.thingID = id;
@@ -805,10 +829,11 @@ function checkDisplayAndStuff() {
 				var numLettersPerString = formerString.length;
 				var numStrings = Math.ceil(numLetters / numLettersPerString);
 				for (var x = 0; x < numStrings; x++) {
-					addReserveString(formerString, t.ID);
+					addReserveString(formerString, t.ID, t.type, t.position);
 				}
 			}
-		} else if (t.type != star_type) {
+		} // julia: this is why stuff disappears behind you
+		else if (t.type != star_type) {
 			t.isDisplayed = false;
 			if (t.isFormed) {
 				t.isFormed = false;
@@ -978,7 +1003,7 @@ function render() {
 				l.mesh.material.color.setHex(t.colors[t.numLettersFormed]);
 				// below commented out in order to keep letters from moving (julia)
 				//l.setDestination(newDest.x, newDest.y, newDest.z);
-				if (t.type != word_type) {
+				if (t.type != word_type /*&& t.type != help_type*/) {
 					l.setDestination(newDest.x, newDest.y, newDest.z);
 				}
 

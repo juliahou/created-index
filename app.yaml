@@ -1,4 +1,10 @@
-runtime: python27
+runtime: python311
+env: flex
+entrypoint: gunicorn -b :$PORT home:app
+
+runtime_config:
+  operating_system: "ubuntu22"
+
 api_version: 1
 threadsafe: true
 
@@ -8,4 +14,4 @@ handlers:
 
 libraries:
   - name: flask
-    version: 0.12
+    version: 3.0.0

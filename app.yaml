@@ -1,9 +1,10 @@
-runtime: python311
-env: flex
+runtime: python
+env: flexible
 entrypoint: gunicorn -b :$PORT home:app
 
 runtime_config:
   operating_system: "ubuntu22"
+  runtime_version: "3.11"
 
 api_version: 1
 threadsafe: true
@@ -11,7 +12,3 @@ threadsafe: true
 handlers:
   - url: /.*
     script: home.app
-
-libraries:
-  - name: flask
-    version: 3.0.0

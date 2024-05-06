@@ -530,7 +530,8 @@ var map = [
 	new THREE.Vector3(4000, -40, 0),
 	new THREE.Vector3(4400, -40, 0),
 	new THREE.Vector3(4800, -40, 0),
-	new THREE.Vector3(5200, -40, 0)
+	new THREE.Vector3(5200, -40, 0),
+  new THREE.Vector3(5600, -40, 0)
 ];
 var coordsMap = [
 	[0, 0],
@@ -1068,38 +1069,48 @@ function render() {
 
 render();
 
+// CR-someday jhou: Don't hardcode
 $("body").on("mousemove", function(event) {
-	rotationY = -(event.pageX - window.innerWidth / 2) * 0.001;
+  //rotationY = -0.389;
+  //rotationX = 0.0465;
+
+  //rotationX = -0.1935;
+  //rotationY = -0.144;
+
+  if (window.innerWidth < 500) {
+  rotationX = 0.0225;
+  rotationY = 0.286;
+    //console.log("mobile");
+    //console.log(window.innerWidth);
+  } else {
+//console.log("not mobile");
+  //  console.log(window.innerWidth);
+  rotationY = -(event.pageX - window.innerWidth / 2) * 0.001;
 	rotationX = -(event.pageY - window.innerHeight / 2) * 0.001;
+  }
+    //console.log(rotationX);
+  //console.log(rotationY);
 });
 
 var zoomed = true;
 
-$("body").on("click", function(event) {
-	if (zoomed) {
-		cameraDistance = 350;
-		zoomed = false;
-	} else {
-		cameraDistance = 250;
-		zoomed = true;
-	}
-	cameraPosition.z = cameraDistance;
-	camera.position.z = cameraDistance;
-})
+// CR-someday jhou: Unclear why this simplified version of [move_forward]
+// doesn't work properly.
+/*function move_forward(event) {
+  currentCoordX++;
+  console.log("here")
+  console.log(currentCoordX);
+  playerPosition = getMapIndexFromCoords(currentCoordX, currentCoordZ);
 
-$("body").bind("keypress", function(event) {
-	if (event.which >= 97 && event.which <= 122) {
-		result = -3;
-		if (event.which == 102 && forwardOkay) {
-			result = 0;
-		} else if (event.which == 108 && leftOkay) {
-			result = 1;
-		} else if (event.which == 98 && backOkay) {
-			result = 2;
-		} else if (event.which == 114 && rightOkay) {
-			result = 3;
-		}
+	var movement = new THREE.Vector3();
+	movement.subVectors(map[playerPosition], things[0].position);
 
+	things[0].position.add(movement);
+
+	cameraPosition.add(movement);
+}*/
+function move_forward(event) {
+    result = 0;
 		if (playerMakingMove) {
 			if ((!playerMadeMove) && (result != -3)) {
 				playerMadeMove = true;
@@ -1119,10 +1130,10 @@ $("body").bind("keypress", function(event) {
 				else if (currentDirection % 4 == 3) {
 					currentCoordZ++;
 				}
-
 				playerPosition = getMapIndexFromCoords(currentCoordX, currentCoordZ);
 
 				var movement = new THREE.Vector3();
+        console.log(map[playerPosition], things[0].position);
 				movement.subVectors(map[playerPosition], things[0].position);
 
 				things[0].position.add(movement);
@@ -1141,7 +1152,19 @@ $("body").bind("keypress", function(event) {
 				}
 			}
 		}
+}
+
+// CR-someday jhou: attach zoom to a keypress
+function zoom(event) {
+	if (zoomed) {
+		cameraDistance = 350;
+		zoomed = false;
 	} else {
-		addConsoleString("abcdefhiijidjsfkl");
+		cameraDistance = 250;
+		zoomed = true;
 	}
-})
+	cameraPosition.z = cameraDistance;
+	camera.position.z = cameraDistance;
+}
+
+$("body").on("click", move_forward);
